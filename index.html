@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ซากศพสีฟ้าที่กำเนิดจากจิตใต้สำนึก</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --bg-color: #1a224a;
+            --highlight-color: #dcb347;
+            --text-color: #ffffff;
+            --nav-height: 76px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Prompt', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .custom-container {
+            max-width: 1600px;
+            padding-left: 4%;
+            padding-right: 4%;
+            margin: 0 auto;
+        }
+
+        /* ==========================================
+           Animations (แก้ไขให้เล่นซ้ำได้ตลอด)
+           ========================================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .fade-up.visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        /* แอนิเมชันแยกเฉพาะรูปเด็ก (รักษาสัดส่วนตำแหน่งแกน X ไว้) */
+        .kids-large.fade-up {
+            opacity: 0;
+            transform: translateX(-10%) translateY(50px);
+        }
+        .kids-large.fade-up.visible {
+            opacity: 1 !important;
+            transform: translateX(-10%) translateY(0) !important;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #ffffff !important;
+            min-height: var(--nav-height);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 1050;
+            padding: 10px 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: #000 !important;
+            font-size: 1.6rem;
+        }
+
+        .nav-link {
+            color: #333 !important;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-left: 25px;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--highlight-color) !important;
+        }
+
+        /* ==========================================
+           Section 1: Hero 
+           ========================================== */
+        #hero-cover {
+            min-height: calc(100vh - var(--nav-height)); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); 
+            z-index: 10; 
+            background-color: var(--bg-color);
+            padding: 3rem 0;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            line-height: 1.5;
+        }
+
+        .hero-highlight {
+            font-size: 4.5rem; 
+            display: block;
+            margin: 20px 0 10px 0;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+
+        .hero-subhighlight {
+            font-size: 2.8rem;
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 500px; 
+            height: auto;
+            object-fit: contain;
+            border: 12px solid white; 
+            box-shadow: -20px 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* ==========================================
+           Section 2: เรื่องย่อ 
+           ========================================== */
+        section {
+            scroll-margin-top: var(--nav-height); 
+            position: relative;
+            z-index: 5;
+        }
+
+        #synopsis-details {
+            background-color: #ffffff; 
+            position: relative;
+            overflow: hidden;
+            padding-top: 6rem;
+            padding-bottom: 0; 
+        }
+        
+        #synopsis-details::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 58%; 
+            background-color: var(--bg-color);
+            clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+            z-index: 1;
+        }
+
+        .content-z {
+            position: relative;
+            z-index: 2;
+        }
+
+        .kids-large {
+            max-width: 800px !important; 
+            width: 120%; 
+            margin-bottom: -10px; 
+            position: relative;
+            z-index: 3;
+        }
+
+        @media (min-width: 992px) {
+            .synopsis-text-box {
+                padding-left: 2rem !important; 
+                padding-right: 4rem !important;
+                padding-bottom: 4rem; 
+            }
+        }
+
+        /* ==========================================
+           Typography & Utilities
+           ========================================== */
+        .text-yellow {
+            color: var(--highlight-color) !important;
+            font-weight: 700;
+        }
+
+        .synopsis-text-box p {
+            margin-bottom: 1.5rem;
+            text-align: center; 
+            font-size: 1.3rem; 
+            line-height: 1.8;
+        }
+
+        #review p, #value p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            font-size: 1.3rem;
+        }
+
+        .img-constrained {
+            object-fit: contain;
+            width: 100%;
+        }
+
+        /* ==========================================
+           Section 5: บทสรุป (พิมพ์ดีด) & Section AEO
+           ========================================== */
+        #conclusion, #aeo-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 0;
+            background-color: var(--bg-color);
+        }
+
+        /* แก้ไขเพิ่มให้รองรับการจัดซ้าย-ขวาสำหรับ AEO */
+        .typing-line-wrapper {
+            position: relative;
+        }
+        
+        .typing-line-wrapper h2 {
+            font-size: 2.2rem;
+            line-height: 1.7;
+        }
+
+        .aeo-wrapper h3 {
+            font-size: 1.8rem;
+            line-height: 1.6;
+        }
+
+        /* ==========================================
+           Responsive Adjustments สำหรับจอมือถือ
+           ========================================== */
+        @media (max-width: 991px) {
+            #synopsis-details::before {
+                width: 100%;
+                clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+            }
+            .hero-title { font-size: 1.5rem; }
+            .hero-highlight { font-size: 2.8rem; }
+            .hero-subhighlight { font-size: 1.8rem; }
+            .book-cover { max-width: 300px; margin-bottom: 3rem; }
+            p { font-size: 1.1rem; }
+            .synopsis-text-box { padding-left: 1rem !important; padding-right: 1rem !important; padding-bottom: 3rem; }
+            
+            .kids-large { width: 100%; max-width: 500px !important; transform: none; }
+            .kids-large.fade-up { transform: translateY(50px); }
+            .kids-large.fade-up.visible { transform: translateY(0) !important; }
+
+            .typing-line-wrapper h2, .aeo-wrapper h3 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-fluid custom-container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="bi bi-book me-2" style="font-size: 1.8rem;"></i> Booker
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#synopsis-details">เรื่องย่อ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#review">รีวิว</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#value">คุณค่า</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-yellow" href="#aeo-section">ข้อมูลหนังสือ (AEO)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- หน้าแรก (หน้าปก + คำโปรย) -->
+    <header id="hero-cover">
+        <div class="container-fluid custom-container content-z">
+            <div class="row align-items-center justify-content-center h-100">
+                <div class="col-lg-5 text-center text-lg-end pe-lg-5 fade-up">
+                    <img src="img/หนังสือ.jpg" alt="ปกหนังสือ ซากศพสีฟ้า" class="book-cover">
+                </div>
+                
+                <div class="col-lg-7 text-center text-lg-start mt-5 mt-lg-0 ps-lg-5 fade-up" style="transition-delay: 0.2s;">
+                    <h2 class="fw-normal hero-title text-white">
+                        ระบบอำนาจนิยมผ่านมุมมองของเหล่าเด็กๆ<br>
+                        ในโรงเรียนประถม คุณครูเทวดา และ<br>
+                        <span class="text-yellow fw-bold hero-highlight">ซากศพสีฟ้า</span>
+                        <span class="text-yellow fw-bold hero-subhighlight">ที่กำเนิดจากจิตใต้สำนึก</span>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section เรื่องย่อ -->
+    <section id="synopsis-details">
+        <div class="container-fluid custom-container content-z h-100">
+            <div class="row h-100"> 
+                
+                <!-- รูปเด็ก 2 คน -->
+                <div class="col-lg-5 d-flex align-items-end text-center text-lg-end mt-4 mt-lg-0 pe-lg-0">
+                    <img src="img/ซากศพ สีฟ้า - 1 - Edited.png" alt="เด็กสองคน" class="img-fluid img-constrained kids-large fade-up">
+                </div>
+                
+                <div class="col-lg-6 ms-auto synopsis-text-box d-flex flex-column justify-content-center text-white h-100 fade-up" style="transition-delay: 0.2s;">
+                    <p style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        เมื่อเกิดความเข้าใจผิดบางประการ ทำให้ "มาซาโอะ" กลายเป็นที่เกลียดชังของ "ครูฮาเนดะ" ครูประจำชั้นที่ภายนอกดูเป็นครูในอุดมคติและเป็นที่รักของทุกคน ครูฮาเนดะใช้มาซาโอะเป็นเครื่องมือระบายอารมณ์และเป็นแพะรับบาปประจำห้องเรียน โดยดุด่า และบางครั้งก็ถึงขั้นลงไม้ลงมืออย่างรุนแรง เมื่อเพื่อนร่วมชั้นเห็นดังนั้น แทนที่จะช่วยเหลือ พวกเขากลับเลือกที่จะเพิกเฉย ตีตัวออกห่าง และร่วมกันกลั่นแกล้งเพื่อความปลอดภัยของตนเอง
+                    </p>
+                    <p style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        ในขณะที่ความกดดันทางจิตใจถูกบั่นทอนจนถึงขีดสุด มาซาโอะก็ได้พบกับ "อาโอะ" เด็กชายประหลาดผู้มีผิวหนังสีฟ้าซีด ใบหน้าบิดเบี้ยวเต็มไปด้วยบาดแผล เขาเสนอทางออกเดียวที่จะยุติขุมนรกนี้ลงได้ นั่นก็คือการยุให้มาซาโอะลุกขึ้นสู้ด้วยการ...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section รีวิว (วางแผนฆ่าครูฮาเนดะ) -->
+    <section id="review" style="padding: 6rem 0; background-color: var(--bg-color);">
+        <div class="container-fluid custom-container text-center">
+            
+            <h1 class="text-yellow fw-bold mb-5 fade-up" style="font-size: 4rem; letter-spacing: 2px;">"วางแผนฆ่าครูฮาเนดะ" ทิ้งเสีย!</h1>
+            
+            <div class="mb-5 position-relative fade-up" style="transition-delay: 0.1s;">
+                <img src="img/ครูผีปีศาจ.png" alt="วางแผนฆ่าครู" class="img-fluid border border-white border-4" style="max-width: 1200px; width: 100%; box-shadow: 0 15px 30px rgba(0,0,0,0.5);">
+            </div>
+
+            <div class="text-start mx-auto fade-up" style="max-width: 1200px; transition-delay: 0.2s;">
+                <p>
+                    ประเด็นที่น่าสนใจอย่างยิ่งในวรรณกรรมเรื่องนี้ คือการจำลองภาพสะท้อนของปัญหาเชิงโครงสร้างสังคมผ่าน <span class="text-yellow">"ระบบการปกครองในโรงเรียน"</span> เมื่อผู้มีอำนาจเบ็ดเสร็จอย่างครูประจำชั้นเป็นผู้เริ่มชี้นำการกลั่นแกล้ง กลุ่มเพื่อนร่วมชั้นจึงเลือกที่จะเพิกเฉย สนับสนุน และตัดขาดมาซาโอะออกจากกลุ่มเพื่อรักษาความปลอดภัยของตนเอง การกระทำดังกล่าวส่งผลให้มาซาโอะถูกลดทอนคุณค่าความเป็นมนุษย์ กลายเป็นเพียง <span class="text-yellow">"มนุษย์โปร่งแสง"</span> และเป็นเสมือน <span class="text-yellow">"ถังขยะ"</span> ที่คอยรองรับความอารมณ์ขุ่นมัวของทุกคนในพื้นที่แห่งนั้น
+                </p>
+                <p>
+                    ความรุนแรงที่ถูกกดทับไว้ในจิตใต้สำนึกจึงเริ่มก่อตัวขึ้นในรูปแบบของภาพหลอน มาซาโอะได้พบกับ <span class="text-yellow">"อาโอะ"</span> เด็กชายปริศนาผู้มีผิวหนังสีฟ้าซีด ใบหน้าเต็มไปด้วยบาดแผล และสวมชุดพันธนาการ อาโอะคือสัญญะสะท้อนถึงความโกรธแค้น ซึ่งปรากฏตัวขึ้นเพื่อรับฟังความเจ็บปวด และยุยงให้มาซาโอะลุกขึ้นต่อสู้ด้วยการวางแผนฆาตกรรมครูฮาเนดะ
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section คุณค่า -->
+    <section id="value" style="padding-bottom: 6rem; background-color: var(--bg-color);">
+        <div class="container-fluid custom-container">
+            <div class="row align-items-center justify-content-center mx-auto" style="max-width: 1400px;">
+                <div class="col-lg-6 ps-lg-5 order-2 order-lg-1 mt-5 mt-lg-0">
+                    <div class="mb-5 fade-up">
+                        <h3 class="text-yellow fw-bold mb-3" style="font-size: 2.5rem; line-height: 1.4;">
+                            ภาพสะท้อนของความรุนแรง<br>เชิงโครงสร้างสังคม
+                        </h3>
+                        <p class="pe-lg-5">
+                            ระบบการปกครองและพลวัตทางอำนาจในห้องเรียน เป็นภาพสะท้อนของสังคมใหญ่ที่ผู้มีอำนาจมักจะหา "แพะรับบาป" หรือสร้างชนชั้นล่างสุดขึ้นมาเพื่อรองรับอารมณ์ และรักษาสถานะการควบคุมของตนเองไว้
+                        </p>
+                    </div>
+                    
+                    <div class="fade-up" style="transition-delay: 0.2s;">
+                        <h3 class="text-yellow fw-bold mb-3" style="font-size: 2.5rem; line-height: 1.4;">
+                            ความอันตรายของ<br>ความเพิกเฉย
+                        </h3>
+                        <p class="pe-lg-5">
+                            การที่เพื่อนร่วมชั้นเลือกที่จะเงียบ เพิกเฉย หรือแม้กระทั่งเข้าร่วมการกลั่นแกล้งเพียงเพื่อปกป้องตนเองให้พ้นภัย สะท้อนให้เห็นถึงความน่ากลัวของความเห็นแก่ตัวและจิตวิทยาหมู่ในสังคม
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 text-center order-1 order-lg-2 fade-up" style="transition-delay: 0.1s;">
+                    <img src="img/ร้องไห้ทำไม.png" alt="ความอันตรายของความเพิกเฉย" class="img-fluid img-constrained" style="max-width: 750px; filter: drop-shadow(0px 15px 20px rgba(0,0,0,0.5));">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section บทสรุปสุดท้าย (แอนิเมชันพิมพ์ดีด) -->
+    <section id="conclusion" class="typewriter-container pt-0">
+        <div class="container-fluid custom-container text-center">
+            <div class="mx-auto" style="max-width: 1200px;">
+                
+                <div class="typing-line-wrapper mb-5">
+                    <h2 class="placeholder-text text-yellow fw-bold m-0" style="opacity: 0; pointer-events: none;">หากวันหนึ่งคุณต้องตกอยู่ในโครงสร้างสังคมที่เต็มไปด้วยความเพิกเฉยและการกดขี่เช่นเดียวกับมาซาโอะ</h2>
+                    <h2 class="typed-text text-yellow fw-bold m-0 position-absolute w-100 top-0 start-50 translate-middle-x"></h2>
+                </div>
+                
+                <div class="typing-line-wrapper mb-5">
+                    <h2 class="placeholder-text text-yellow fw-bold m-0" style="opacity: 0; pointer-events: none;">คุณจะเลือกปกป้องความอ่อนโยนในจิตใจเอาไว้</h2>
+                    <h2 class="typed-text text-yellow fw-bold m-0 position-absolute w-100 top-0 start-50 translate-middle-x"></h2>
+                </div>
+
+                <div class="typing-line-wrapper mb-5">
+                    <h2 class="placeholder-text text-white fw-bold m-0" style="opacity: 0; pointer-events: none;">หรือจะยอมปล่อยให้ความโหดร้ายหล่อหลอมให้คุณกลายเป็นปีศาจไปอีกคน?</h2>
+                    <h2 class="typed-text text-white fw-bold m-0 position-absolute w-100 top-0 start-50 translate-middle-x"></h2>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section AEO (แอนิเมชันพิมพ์ดีด) -->
+    <section id="aeo-section" class="typewriter-container pb-5 pt-0">
+        <div class="container-fluid custom-container">
+            <div class="mx-auto border border-yellow p-5 rounded-4" style="max-width: 900px; border-color: var(--highlight-color); border-width: 3px !important; box-shadow: 0 0 20px rgba(220, 179, 71, 0.2); background: rgba(26, 34, 74, 0.8);">
+                
+                <h2 class="text-center text-yellow fw-bold mb-5 fs-1 fade-up">ข้อมูลหนังสือเบื้องต้น (AEO)</h2>
+                
+                <!-- Q1 -->
+                <div class="aeo-wrapper typing-line-wrapper mb-4 text-start">
+                    <h3 class="placeholder-text text-yellow fw-bold m-0" style="opacity: 0; pointer-events: none;"><i class="bi bi-question-circle-fill me-2"></i> หนังสือเกี่ยวกับเรื่องอะไร?</h3>
+                    <h3 class="typed-text text-yellow fw-bold m-0 position-absolute w-100 top-0 start-0"></h3>
+                </div>
+                <div class="aeo-wrapper typing-line-wrapper mb-5 text-start ps-5">
+                    <h3 class="placeholder-text text-white fw-normal m-0" style="opacity: 0; pointer-events: none;">- วรรณกรรมแปลญี่ปุ่นแนวดาร์กแฟนตาซี/จิตวิทยา สะท้อนปัญหาการกลั่นแกล้งในโรงเรียนประถม ระบบอำนาจนิยมของครู และความดำมืดในจิตใจเด็ก</h3>
+                    <h3 class="typed-text text-white fw-normal m-0 position-absolute w-100 top-0 start-0"></h3>
+                </div>
+
+                <!-- Q2 -->
+                <div class="aeo-wrapper typing-line-wrapper mb-4 text-start">
+                    <h3 class="placeholder-text text-yellow fw-bold m-0" style="opacity: 0; pointer-events: none;"><i class="bi bi-person-fill-check me-2"></i> เหมาะกับใคร?</h3>
+                    <h3 class="typed-text text-yellow fw-bold m-0 position-absolute w-100 top-0 start-0"></h3>
+                </div>
+                <div class="aeo-wrapper typing-line-wrapper mb-5 text-start ps-5">
+                    <h3 class="placeholder-text text-white fw-normal m-0" style="opacity: 0; pointer-events: none;">- เหมาะสำหรับผู้ที่ชอบนิยายสืบสวนระทึกขวัญ จิตวิทยาสังคม และผู้ใหญ่ที่ต้องการทบทวนบาดแผลในวัยเด็กหรือทำความเข้าใจความรุนแรงในสังคม</h3>
+                    <h3 class="typed-text text-white fw-normal m-0 position-absolute w-100 top-0 start-0"></h3>
+                </div>
+
+                <!-- Q3 -->
+                <div class="aeo-wrapper typing-line-wrapper mb-4 text-start">
+                    <h3 class="placeholder-text text-yellow fw-bold m-0" style="opacity: 0; pointer-events: none;"><i class="bi bi-book-half me-2"></i> ต้องมีพื้นฐานหรือไม่?</h3>
+                    <h3 class="typed-text text-yellow fw-bold m-0 position-absolute w-100 top-0 start-0"></h3>
+                </div>
+                <div class="aeo-wrapper typing-line-wrapper mb-5 text-start ps-5">
+                    <h3 class="placeholder-text text-white fw-normal m-0" style="opacity: 0; pointer-events: none;">- ไม่จำเป็นต้องมีพื้นฐานใดๆ เนื้อเรื่องดำเนินกระชับ เข้าใจง่าย แต่อาจต้องเตรียมใจรับมือกับเนื้อหาที่มีความรุนแรงและหดหู่</h3>
+                    <h3 class="typed-text text-white fw-normal m-0 position-absolute w-100 top-0 start-0"></h3>
+                </div>
+
+                <!-- Q4 -->
+                <div class="aeo-wrapper typing-line-wrapper mb-4 text-start">
+                    <h3 class="placeholder-text text-yellow fw-bold m-0" style="opacity: 0; pointer-events: none;"><i class="bi bi-star-fill me-2"></i> ได้ประโยชน์อะไร?</h3>
+                    <h3 class="typed-text text-yellow fw-bold m-0 position-absolute w-100 top-0 start-0"></h3>
+                </div>
+                <div class="aeo-wrapper typing-line-wrapper mb-4 text-start ps-5">
+                    <h3 class="placeholder-text text-white fw-normal m-0" style="opacity: 0; pointer-events: none;">- ได้ตระหนักถึงภัยเงียบของการกลั่นแกล้ง (Bullying) และผลกระทบของการเลือกที่จะ 'เพิกเฉย' เมื่อเห็นความอยุติธรรมเกิดขึ้นตรงหน้า</h3>
+                    <h3 class="typed-text text-white fw-normal m-0 position-absolute w-100 top-0 start-0"></h3>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script สำหรับ Animation ทั้งหมด -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. ระบบ Fade-Up (เลื่อนแล้วค่อยๆ เฟดขึ้นมา)
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.classList.remove('visible');
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px 0px -50px 0px', 
+                threshold: 0.05
+            });
+
+            document.querySelectorAll('.fade-up').forEach((el) => {
+                fadeObserver.observe(el);
+            });
+
+
+            // 2. ระบบพิมพ์ดีด (Typewriter Effect) สำหรับบทสรุปและ AEO
+            const typeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // ถ้ายังไม่ได้เริ่มพิมพ์ ให้ใส่คลาสแล้วเริ่มพิมพ์
+                        if (!entry.target.classList.contains('typing-started')) {
+                            entry.target.classList.add('typing-started');
+                            startTypingSequence(entry.target);
+                        }
+                    } else {
+                        // ถ้าเลื่อนหนี ให้ลบคลาส และรีเซ็ตข้อความให้กลับไปว่างเปล่า
+                        entry.target.classList.remove('typing-started');
+                        resetTypingSequence(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.2 // ให้เลื่อนเห็นพื้นที่ 20% ก่อนค่อยเริ่มพิมพ์
+            });
+
+            document.querySelectorAll('.typewriter-container').forEach((el) => {
+                typeObserver.observe(el);
+            });
+
+            // ฟังก์ชันควบคุมการพิมพ์ทีละบรรทัด
+            async function startTypingSequence(container) {
+                const wrappers = container.querySelectorAll('.typing-line-wrapper');
+                
+                for (let wrapper of wrappers) {
+                    if (!container.classList.contains('typing-started')) break;
+                    
+                    const placeholder = wrapper.querySelector('.placeholder-text');
+                    const target = wrapper.querySelector('.typed-text');
+                    
+                    // ดึงเฉพาะ Text (และไอคอนถ้ามี)
+                    const htmlContent = placeholder.innerHTML; 
+                    const textContent = placeholder.textContent;
+                    
+                    target.innerHTML = ''; 
+                    
+                    // ถ้ามี tag <i> (icon) อยู่ ให้พิมพ์ icon ออกมาก่อนทันที
+                    if(htmlContent.includes('<i')) {
+                        const iconHtml = htmlContent.substring(0, htmlContent.indexOf('</i>') + 4);
+                        const remainingText = textContent;
+                        
+                        target.innerHTML = iconHtml;
+                        
+                        for (let i = 0; i < remainingText.length; i++) {
+                            if (!container.classList.contains('typing-started')) return;
+                            target.innerHTML += remainingText.charAt(i);
+                            // ปรับความเร็ว 10ms สำหรับ AEO เพื่อไม่ให้ช้าเกินไป
+                            await new Promise(r => setTimeout(r, container.id === 'aeo-section' ? 10 : 35)); 
+                        }
+                    } else {
+                        // พิมพ์ปกติ
+                        for (let i = 0; i < textContent.length; i++) {
+                            if (!container.classList.contains('typing-started')) return;
+                            target.innerHTML += textContent.charAt(i);
+                            await new Promise(r => setTimeout(r, container.id === 'aeo-section' ? 10 : 35)); 
+                        }
+                    }
+                    
+                    // พักหายใจก่อนพิมพ์บรรทัดต่อไป
+                    await new Promise(r => setTimeout(r, 200));
+                }
+            }
+
+            // ฟังก์ชันรีเซ็ตล้างข้อความทิ้งเวลาเลื่อนหนี
+            function resetTypingSequence(container) {
+                const targets = container.querySelectorAll('.typed-text');
+                targets.forEach(target => {
+                    target.innerHTML = '';
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>
